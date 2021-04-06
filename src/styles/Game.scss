@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;500&display=swap');
+
+$c0: #847dd3;
+$c1: #ef476f;
+$c2: #ffd166;
+$c3: #06d6a0;
+$c4: #118AB2;
+$c5: #252323;
+$c6: red;
+$c7: black;
+
+$button-color: rgb(238, 238, 238);
+$button-hover: rgb(206, 206, 206);
+$button-click: rgb(141, 141, 141);
+
+$tile-big: 35px;
+$tile-small:$tile-big*(3/7);
+$tile-big-margin: $tile-big/10;
+$tile-small-margin: $tile-small/5;
+
+
+
+@mixin tile-color($name, $color) {
+    &.#{$name} {
+        background-color: $color;
+    }
+
+  }
+
+.dialog {
+    padding-bottom: 10px;
+    height: 20px;
+    font-size:20px;
+
+    &.alert {
+        color: $c3;
+    }
+}
+
+
+.tile {
+    @include tile-color(c0, $c0);
+    @include tile-color(c1, $c1);
+    @include tile-color(c2, $c2);
+    @include tile-color(c3, $c3);
+    @include tile-color(c4, $c4);
+    @include tile-color(c5, $c5);
+    @include tile-color(c6, $c6);
+    @include tile-color(c7, $c7);
+
+    border: 0px;
+    border-radius: 50%;
+    outline: none;
+    transition: all .2s ease-in-out; 
+
+    &.board, &.guess {
+        height: $tile-big;
+        width: $tile-big;
+        margin: $tile-big-margin;
+    }
+
+    &.eval {
+        height: $tile-small;
+        width: $tile-small;
+        margin: $tile-small-margin;
+        transition: all .2s ease-in-out; 
+    }
+
+    &.color {
+        border-radius: 25%;
+        height: $tile-big;
+        width: $tile-big;
+
+        &.active {
+            transform: scale(1);
+    
+        }
+    
+        &.inactive {
+            opacity: 0.5;
+            margin: 3px;
+            transform: scale(0.7);
+    
+            &:hover {
+                opacity: 1;
+                transform: scale(1);
+                cursor: pointer;
+            }
+        }
+
+    }
+
+
+    &.active {
+        transition: all .5s ease-in-out; 
+        // background: rgb(230, 230, 230);
+    }
+
+    &.inactive {
+        opacity: 0.5;
+    }
+
+    &.guess {
+        &:hover {
+            cursor: pointer;
+        }
+
+    }
+
+}
+
+
+.main-game{
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &.board{
+        height: 100%;
+    }
+
+    &.evals{
+        height: 100%;
+
+    }
+}
+
+
+.button {
+    border: 0px;
+    margin: 6px;
+    font-size: 1em;
+    font-family: 'Lexend';
+    border-radius: 25px;
+    background-color: $button-color;
+    transition: all .2s ease-in-out; 
+    outline: none;
+    padding: 10px;
+    text-transform: lowercase;
+
+    &:hover {
+        background-color: $button-hover;
+        cursor: pointer;
+    }
+
+    &:active {
+        background-color: $button-click;
+
+    }
+    &:disabled {
+        cursor: default;
+        background-color: $button-color;
+
+
+    }
+
+  }

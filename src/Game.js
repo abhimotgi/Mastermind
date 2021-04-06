@@ -1,0 +1,331 @@
+import React from 'react';
+import classnames from 'classnames';
+
+
+function Tile(props) {
+    return (
+        <button className={classnames(props.className, props.active, props.value)} onClick={props.onClick}>
+          {/* {props.value} */}
+        </button>
+    );
+}
+
+
+function MainButton(props){
+    return (
+        <button disabled={props.disabled} className={props.className} onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
+}
+
+function DisplayMessage(props) {
+    return (
+        <div className={props.className}>
+            {props.value}
+        </div>
+    );
+}
+
+const colors = ['c0', 'c1', 'c2', 'c3', 'c4', 'c5']
+const evalColors = {
+        rcrp: 'c6',
+        rcwp: 'c7'
+    }
+
+class Game extends React.Component {
+
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            board: Array(props.rows*props.cols).fill(null),
+            evals: Array(props.rows*props.cols).fill(null),
+            solution: this.generateSolution(),
+            guessRow: Array(props.cols).fill(null),
+            currentRow: 0,
+            selectedColor: 0,
+            dialog: {
+                message: null,
+                messageState: 'dialog'
+            }
+        }
+    }
+
+    generateSolution = () => {
+        var solution = Array(this.props.cols).fill(null)
+        for (var i = 0; i < solution.length; i++){
+            solution[i] = colors[Math.floor(Math.random() * colors.length)]
+        }
+        return solution
+    }
+
+    renderTile(i, active) {
+        return (
+            <Tile value={this.state.board[i]} active={active} className="tile board"></Tile>
+        );
+    }
+
+    renderGuessRow = () => {
+        var tiles = []
+        for(let i = 0; i < this.state.guessRow.length; i++) {
+            tiles.push(<Tile className="tile guess" value={this.state.guessRow[i]} onClick={() => this.guessTileClicked(i)}></Tile>)
+        }
+        return tiles
+    }
+
+    renderBoard = () => {
+        var tiles = []
+        var row = []
+
+        var startCell = this.state.currentRow
+        var endCell = startCell + this.props.cols
+
+        for(let i = 0; i < this.state.board.length; i++) {
+            if (i >= startCell && i < endCell) {
+                row.push(this.renderTile(i, "active"))
+            } else {
+                row.push(this.renderTile(i, "inactive"))
+            }
+            if ((i+1) % this.props.cols === 0) {
+                tiles.push(<div className="row">{row}</div>)
+                row = []
+            }
+        }
+        return tiles
+    }
+
+    renderEvalTiles = () => {
+        var tiles = []
+        var row = []
+        for (let i = 0; i < this.state.evals.length; i++){
+            row.push(<Tile className="tile eval" value={this.state.evals[i]}></Tile>)
+            if ((i+1)*2 % this.props.cols === 0) {
+                tiles.push(<div className="row">{row}</div>)
+                row = []
+            }
+        }
+        return tiles
+    }
+
+    colorSelected = (i) => {
+        this.setState({
+            selectedColor: i
+        })
+    }
+
+    renderColorSelect = () => {
+
+        var tiles = []
+
+        for (let i = 0; i < colors.length; i++) {
+            let css = (i === this.state.selectedColor) ? "tile color active" : "tile color inactive"
+            tiles.push(<Tile className={css} value={colors[i]} onClick={() => this.colorSelected(i)}></Tile>)
+        }
+
+        return tiles
+    }
+
+    nextTurn = () => {
+        var newActiveRow = parseInt(this.state.currentRow) + parseInt(this.props.cols)
+        if (newActiveRow < this.state.board.length) {
+            this.setState({currentRow: newActiveRow})
+        }
+    }
+
+    evaluateMove = () => {
+        var myGuess = this.state.guessRow.slice()
+        /* Determine how many tiles are the right color & wrong place OR right color & right place */
+        var rightColorRightPlace = 0
+
+        var solnCopy = []
+        var guessCopy = []
+
+        for (let i = 0; i < myGuess.length; i++){
+            if (myGuess[i] === this.state.solution[i]){
+                rightColorRightPlace++
+            } else {
+                solnCopy.push(this.state.solution[i])
+                guessCopy.push(myGuess[i])
+            }
+        }
+
+        var rightColorWrongPlace = 0
+
+        for (let i = 0; i < guessCopy.length; i++) {
+            if (solnCopy.includes(guessCopy[i])) {
+                rightColorWrongPlace++;
+
+                // remove from soln array so doesn't get same element twice
+                var index = solnCopy.indexOf(guessCopy[i]);
+                if (index !== -1) {
+                    solnCopy.splice(index, 1);
+                }
+            }
+            
+        }
+
+        var newEval = this.state.evals.slice()
+        for(let i = 0; i < rightColorRightPlace; i++){
+            newEval[i+this.state.currentRow] = evalColors['rcrp']
+        }
+        for(let i = 0; i < rightColorWrongPlace; i++){
+            newEval[i+this.state.currentRow+rightColorRightPlace] = evalColors['rcwp']
+        }
+        console.log(newEval)
+
+        if (rightColorRightPlace === this.props.cols) {
+            this.setState({evals: newEval,
+                dialog: {
+                    message: 'You won!',
+                    messageState: 'dialog win'
+                }})
+        } else {
+            this.setState({evals: newEval})
+        }
+
+
+    }
+
+    submitMove = () => {
+
+        var myGuess = this.state.guessRow.slice()
+        var newBoard = this.state.board.slice()
+        
+        // Check that myGuess does not contain null fieldd
+        var guessIsValid = !myGuess.includes(null)
+        
+
+        if (guessIsValid) {
+
+
+            for (let i = 0; i < this.props.cols; i++) {
+                newBoard[i+this.state.currentRow] = myGuess[i]
+            }
+    
+            this.clearDialog()
+            this.evaluateMove()
+    
+            this.setState({board: newBoard})
+    
+            this.nextTurn()
+        } else {
+            this.setState({
+                dialog: {
+                    message: 'Guess is incomplete',
+                    messageState: 'dialog alert'
+                }
+            })
+        }
+
+        
+        /*
+            1. if game is not over, there's still board space, and guess row is filled out
+            2. update the new board
+            3. check if guess row is equal to solution
+        */
+    }
+
+    clearDialog = () => {
+        this.setState({
+            dialog: {
+                message: null,
+                messageState: 'dialog'
+            }
+        })
+    }
+
+    guessTileClicked = (i) => {
+        var newRow = this.state.guessRow.slice()
+        newRow[i] = colors[this.state.selectedColor]
+        this.setState({
+            guessRow: newRow
+        })
+    }
+
+    resetGame = () => {
+        this.setState({
+            board: Array(this.props.rows*this.props.cols).fill(null),
+            evals: Array(this.props.rows*this.props.cols).fill(null),
+            guessRow: Array(this.props.cols).fill(null),
+            solution: this.generateSolution(),
+            currentRow: 0,
+            color: null,
+            dialog: {
+                message: null,
+                messageState: 'dialog'
+            }
+        })
+    }
+
+    gameStatus = () => {
+        // Game state: won, lost, in progress
+        // last 4 evaluations are right color right place = winner
+        var lastRow = this.state.evals.slice((this.getTurnNumber()-1)*this.props.cols, this.getTurnNumber()*this.props.cols)
+        if (JSON.stringify(lastRow) === JSON.stringify((Array(this.props.cols).fill(evalColors['rcrp'])))) {
+            return 'won'
+        } // board is filled up = lost
+        else if (this.getTurnNumber() === this.props.rows) {
+            return 'lost'
+        } else {
+            return 'in progress'
+        }
+        // else game is in progress
+
+    }
+
+    getTurnNumber = () => {
+        for (let i = 0; i < this.props.rows; i++) {
+            if (this.state.board[i*this.props.cols] === null) {
+                return i;
+            }
+        }
+    }
+
+    render () {
+        console.log('turn: ', this.getTurnNumber())
+        console.log('status: ', this.gameStatus())
+
+        var buttons = []
+        if (this.gameStatus() === 'won' || this.gameStatus() === 'lost') {
+            buttons.push(<MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled="disabled"></MainButton>)
+        } else {
+            buttons.push(<MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled=""></MainButton>)
+        }
+        buttons.push(<MainButton onClick={this.resetGame} value="New Game" className="button new-game" disabled=""></MainButton>)
+
+
+        return (
+            <div class="container">
+                <DisplayMessage className={this.state.dialog.messageState} value={this.state.dialog.message}></DisplayMessage>
+
+                <div className="main-game">
+                    <div className="board">
+                        {this.renderBoard()}
+                    </div>
+                    <div className="evals">
+                        {this.renderEvalTiles()}
+                    </div>
+                </div>
+               
+                <br/>
+
+                <div>
+                    {this.renderGuessRow()}
+                </div>
+                <br/>
+
+                <div>
+                    {this.renderColorSelect()}
+                </div>
+                <br/>
+                <div>
+                    {buttons}
+                </div>
+            </div>
+        );
+    }
+
+}
+
+export default Game;
