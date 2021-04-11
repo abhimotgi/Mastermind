@@ -3,8 +3,7 @@ import Game from './components/Game';
 import Instructions from './components/Instructions'
 
 import {
-  BrowserRouter as Router,
-  Switch,
+  HashRouter,
   Route,
   NavLink
 } from "react-router-dom";
@@ -12,7 +11,7 @@ import {
 
 function App() {
   return (
-    <Router>
+    <HashRouter>
 
 
       <div className="App">
@@ -26,16 +25,14 @@ function App() {
           </nav>
         </div>
 
-        <Switch>
           <Route exact path="/">
             <Game rows={10} cols={4}></Game>
           </Route>
           <Route path="/help">
             <Instructions></Instructions>
           </Route>
-        </Switch>
       </div>
-    </Router>
+    </HashRouter>
   );
 }
 
