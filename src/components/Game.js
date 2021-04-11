@@ -1,20 +1,13 @@
 import React from 'react';
-import classnames from 'classnames';
+import Tile from './Tile'
 
 
-function Tile(props) {
-    return (
-        <button className={classnames(props.className, props.active, props.value)} onClick={props.onClick}>
-          {/* {props.value} */}
-        </button>
-    );
-}
-
-
-function MainButton(props){
+function MainButton(props) {
     return (
         <button disabled={props.disabled} className={props.className} onClick={props.onClick}>
-            {props.value}
+            <div>
+                {props.value}
+            </div>
         </button>
     );
 }
@@ -29,9 +22,9 @@ function DisplayMessage(props) {
 
 const colors = ['c0', 'c1', 'c2', 'c3', 'c4', 'c5']
 const evalColors = {
-        rcrp: 'c6',
-        rcwp: 'c7'
-    }
+    rcrp: 'c6',
+    rcwp: 'c7'
+}
 
 class Game extends React.Component {
 
@@ -39,8 +32,8 @@ class Game extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            board: Array(props.rows*props.cols).fill(null),
-            evals: Array(props.rows*props.cols).fill(null),
+            board: Array(props.rows * props.cols).fill(null),
+            evals: Array(props.rows * props.cols).fill(null),
             solution: this.generateSolution(),
             guessRow: Array(props.cols).fill(null),
             currentRow: 0,
@@ -54,7 +47,7 @@ class Game extends React.Component {
 
     generateSolution = () => {
         var solution = Array(this.props.cols).fill(null)
-        for (var i = 0; i < solution.length; i++){
+        for (var i = 0; i < solution.length; i++) {
             solution[i] = colors[Math.floor(Math.random() * colors.length)]
         }
         return solution
@@ -68,7 +61,7 @@ class Game extends React.Component {
 
     renderGuessRow = () => {
         var tiles = []
-        for(let i = 0; i < this.state.guessRow.length; i++) {
+        for (let i = 0; i < this.state.guessRow.length; i++) {
             tiles.push(<Tile className="tile guess" value={this.state.guessRow[i]} onClick={() => this.guessTileClicked(i)}></Tile>)
         }
         return tiles
@@ -81,13 +74,13 @@ class Game extends React.Component {
         var startCell = this.state.currentRow
         var endCell = startCell + this.props.cols
 
-        for(let i = 0; i < this.state.board.length; i++) {
+        for (let i = 0; i < this.state.board.length; i++) {
             if (i >= startCell && i < endCell) {
                 row.push(this.renderTile(i, "active"))
             } else {
                 row.push(this.renderTile(i, "inactive"))
             }
-            if ((i+1) % this.props.cols === 0) {
+            if ((i + 1) % this.props.cols === 0) {
                 tiles.push(<div className="row">{row}</div>)
                 row = []
             }
@@ -98,9 +91,9 @@ class Game extends React.Component {
     renderEvalTiles = () => {
         var tiles = []
         var row = []
-        for (let i = 0; i < this.state.evals.length; i++){
+        for (let i = 0; i < this.state.evals.length; i++) {
             row.push(<Tile className="tile eval" value={this.state.evals[i]}></Tile>)
-            if ((i+1)*2 % this.props.cols === 0) {
+            if ((i + 1) * 2 % this.props.cols === 0) {
                 tiles.push(<div className="row">{row}</div>)
                 row = []
             }
@@ -128,8 +121,8 @@ class Game extends React.Component {
 
     nextTurn = () => {
         var newActiveRow = parseInt(this.state.currentRow) + parseInt(this.props.cols)
-        if (newActiveRow < this.state.board.length) {
-            this.setState({currentRow: newActiveRow})
+        if (newActiveRow <= this.state.board.length) {
+            return newActiveRow
         }
     }
 
@@ -141,8 +134,8 @@ class Game extends React.Component {
         var solnCopy = []
         var guessCopy = []
 
-        for (let i = 0; i < myGuess.length; i++){
-            if (myGuess[i] === this.state.solution[i]){
+        for (let i = 0; i < myGuess.length; i++) {
+            if (myGuess[i] === this.state.solution[i]) {
                 rightColorRightPlace++
             } else {
                 solnCopy.push(this.state.solution[i])
@@ -162,53 +155,50 @@ class Game extends React.Component {
                     solnCopy.splice(index, 1);
                 }
             }
-            
+
         }
 
         var newEval = this.state.evals.slice()
-        for(let i = 0; i < rightColorRightPlace; i++){
-            newEval[i+this.state.currentRow] = evalColors['rcrp']
+        for (let i = 0; i < rightColorRightPlace; i++) {
+            newEval[i + this.state.currentRow] = evalColors['rcrp']
         }
-        for(let i = 0; i < rightColorWrongPlace; i++){
-            newEval[i+this.state.currentRow+rightColorRightPlace] = evalColors['rcwp']
-        }
-        console.log(newEval)
-
-        if (rightColorRightPlace === this.props.cols) {
-            this.setState({evals: newEval,
-                dialog: {
-                    message: 'You won!',
-                    messageState: 'dialog win'
-                }})
-        } else {
-            this.setState({evals: newEval})
+        for (let i = 0; i < rightColorWrongPlace; i++) {
+            newEval[i + this.state.currentRow + rightColorRightPlace] = evalColors['rcwp']
         }
 
-
+        return newEval
     }
 
     submitMove = () => {
 
         var myGuess = this.state.guessRow.slice()
         var newBoard = this.state.board.slice()
-        
+
         // Check that myGuess does not contain null fieldd
         var guessIsValid = !myGuess.includes(null)
-        
+
 
         if (guessIsValid) {
 
-
+            // set the last row to the guess
             for (let i = 0; i < this.props.cols; i++) {
-                newBoard[i+this.state.currentRow] = myGuess[i]
+                newBoard[i + this.state.currentRow] = myGuess[i]
             }
-    
-            this.clearDialog()
-            this.evaluateMove()
-    
-            this.setState({board: newBoard})
-    
-            this.nextTurn()
+
+            // populate the evaluations
+            let newEval = this.evaluateMove()
+            let newActiveRow = this.nextTurn()
+            let gameStatus = this.getGameStatus(newBoard, newEval, this.state.currentRow)
+
+            // update the board and message
+            this.setState({
+                board: newBoard,
+                evals: newEval,
+                currentRow: newActiveRow,
+                dialog: gameStatus
+            })
+
+
         } else {
             this.setState({
                 dialog: {
@@ -217,13 +207,6 @@ class Game extends React.Component {
                 }
             })
         }
-
-        
-        /*
-            1. if game is not over, there's still board space, and guess row is filled out
-            2. update the new board
-            3. check if guess row is equal to solution
-        */
     }
 
     clearDialog = () => {
@@ -245,8 +228,8 @@ class Game extends React.Component {
 
     resetGame = () => {
         this.setState({
-            board: Array(this.props.rows*this.props.cols).fill(null),
-            evals: Array(this.props.rows*this.props.cols).fill(null),
+            board: Array(this.props.rows * this.props.cols).fill(null),
+            evals: Array(this.props.rows * this.props.cols).fill(null),
             guessRow: Array(this.props.cols).fill(null),
             solution: this.generateSolution(),
             currentRow: 0,
@@ -258,47 +241,54 @@ class Game extends React.Component {
         })
     }
 
-    gameStatus = () => {
-        // Game state: won, lost, in progress
-        // last 4 evaluations are right color right place = winner
-        var lastRow = this.state.evals.slice((this.getTurnNumber()-1)*this.props.cols, this.getTurnNumber()*this.props.cols)
+    getGameStatus = (board, evals, currentRow) => {
+        // check if last row evaluations are right color, right place
+        let lastRow = evals.slice(currentRow, currentRow + this.props.cols)
+
+        // If last row is all 'right color right place' then the user won
         if (JSON.stringify(lastRow) === JSON.stringify((Array(this.props.cols).fill(evalColors['rcrp'])))) {
-            return 'won'
-        } // board is filled up = lost
-        else if (this.getTurnNumber() === this.props.rows) {
-            return 'lost'
-        } else {
-            return 'in progress'
+            return {
+                message: 'You won!',
+                messageState: 'dialog won'
+            }
         }
-        // else game is in progress
+        else if (currentRow + this.props.cols === board.length) {
+            return {
+                message: 'You lost...',
+                messageState: 'dialog lost'
+            }
+        } else {
+            return {
+                message: '',
+                messageState: 'dialog'
 
-    }
-
-    getTurnNumber = () => {
-        for (let i = 0; i < this.props.rows; i++) {
-            if (this.state.board[i*this.props.cols] === null) {
-                return i;
             }
         }
     }
 
-    render () {
-        console.log('turn: ', this.getTurnNumber())
-        console.log('status: ', this.gameStatus())
 
-        var buttons = []
-        if (this.gameStatus() === 'won' || this.gameStatus() === 'lost') {
-            buttons.push(<MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled="disabled"></MainButton>)
-        } else {
-            buttons.push(<MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled=""></MainButton>)
+    getTurnNumber = () => {
+        for (let i = 0; i < this.props.rows; i++) {
+            if (this.state.board[i * this.props.cols] === null) {
+                return i;
+            }
         }
-        buttons.push(<MainButton onClick={this.resetGame} value="New Game" className="button new-game" disabled=""></MainButton>)
+        return -1;
+    }
 
+    clearGuess = () => {
+        this.setState({
+            guessRow: Array(this.props.cols).fill(null)
+        })
+    }
+
+    render() {
+
+        const wonOrLost = this.state.dialog.messageState.includes('won') || this.state.dialog.messageState.includes('lost')
 
         return (
             <div class="container">
                 <DisplayMessage className={this.state.dialog.messageState} value={this.state.dialog.message}></DisplayMessage>
-
                 <div className="main-game">
                     <div className="board">
                         {this.renderBoard()}
@@ -307,20 +297,21 @@ class Game extends React.Component {
                         {this.renderEvalTiles()}
                     </div>
                 </div>
-               
-                <br/>
+
+                <br />
 
                 <div>
                     {this.renderGuessRow()}
+                    <MainButton value={"x"} className="button clear-guess" onClick={this.clearGuess}></MainButton>
                 </div>
-                <br/>
-
+                <br />
                 <div>
                     {this.renderColorSelect()}
                 </div>
-                <br/>
+                <br />
                 <div>
-                    {buttons}
+                    <MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled={wonOrLost ? "disabled" : ""}></MainButton>
+                    <MainButton onClick={this.resetGame} value="New Game" className="button new-game" disabled=""></MainButton>
                 </div>
             </div>
         );

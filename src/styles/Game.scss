@@ -9,9 +9,12 @@ $c5: #252323;
 $c6: red;
 $c7: black;
 
-$button-color: rgb(238, 238, 238);
+$button-color: rgb(228, 228, 228);
 $button-hover: rgb(206, 206, 206);
 $button-click: rgb(141, 141, 141);
+
+$tile-color:rgb(228, 228, 228);
+$tile-hover-color: rgb(184, 184, 184);
 
 $tile-big: 35px;
 $tile-small:$tile-big*(3/7);
@@ -30,12 +33,26 @@ $tile-small-margin: $tile-small/5;
 .dialog {
     padding-bottom: 10px;
     height: 20px;
-    font-size:20px;
+    font-size:18px;
+    width: 50%;
+    margin: 10px auto 10px auto;
+    border-radius: 15px;
+    padding: 2%;
 
     &.alert {
-        color: $c3;
+        color: orange;
     }
+
+    &.won {
+        color: green;
+    }
+
+    &.lost {
+        color: red;
+    }
+
 }
+
 
 
 .tile {
@@ -51,7 +68,8 @@ $tile-small-margin: $tile-small/5;
     border: 0px;
     border-radius: 50%;
     outline: none;
-    transition: all .2s ease-in-out; 
+    background-color: $tile-color;
+    transition: all .1s ease-in-out; 
 
     &.board, &.guess {
         height: $tile-big;
@@ -63,7 +81,6 @@ $tile-small-margin: $tile-small/5;
         height: $tile-small;
         width: $tile-small;
         margin: $tile-small-margin;
-        transition: all .2s ease-in-out; 
     }
 
     &.color {
@@ -91,18 +108,14 @@ $tile-small-margin: $tile-small/5;
     }
 
 
-    &.active {
-        transition: all .5s ease-in-out; 
-        // background: rgb(230, 230, 230);
-    }
-
     &.inactive {
-        opacity: 0.5;
+        opacity: 0.4;
     }
 
     &.guess {
         &:hover {
             cursor: pointer;
+            filter: brightness(95%);
         }
 
     }
@@ -135,10 +148,22 @@ $tile-small-margin: $tile-small/5;
     font-family: 'Lexend';
     border-radius: 25px;
     background-color: $button-color;
-    transition: all .2s ease-in-out; 
     outline: none;
     padding: 10px;
     text-transform: lowercase;
+
+    &.clear-guess {
+        height: 20px;
+        width: 20px;
+        padding: 12px;
+
+        div {
+            position: relative;
+            top: -12px;
+            left: -4px;
+        }
+
+    }
 
     &:hover {
         background-color: $button-hover;

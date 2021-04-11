@@ -1,0 +1,40 @@
+h1 {
+    margin-bottom:2px;
+}
+
+nav {
+    ul {
+        width: 50%;
+        margin: auto;
+        padding: 0px;
+    }
+
+    li {
+        display:inline;
+    }
+    a {
+        color:black;
+        padding: 2px 10px;
+        margin:auto;
+        text-decoration:none;
+        &:hover{
+            // background-color:#aaa;
+            // color:white;
+        }
+        &:active, :visited{
+            font-weight:bolder;
+            // background-color:#000;
+            // color:white;
+        }
+        &.is-active {
+            font-weight:bolder;
+
+            // background-color:#000;
+            // color:white;
+
+        }
+        
+    }
+    
+    
+}

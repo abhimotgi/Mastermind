@@ -1,9 +1,15 @@
 @import 'styles/Game.scss';
 @import 'styles/Main.scss';
+@import 'styles/Nav.scss';
+@import 'styles/Help.scss';
+
 
 
 .App {
   text-align: center;
+  width: 400px;
+  height:100%;
+  margin: auto;
 }
 
 
