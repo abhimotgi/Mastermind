@@ -2,7 +2,7 @@
   "name": "mastermind",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://abhimotgi.com/Mastermind",
+  "homepage": "http://abhimotgi.com/mastermind",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.5",
