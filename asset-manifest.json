@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Mastermind/static/css/main.7bae1738.chunk.css",
+    "main.js": "/Mastermind/static/js/main.1da4cf7e.chunk.js",
+    "main.js.map": "/Mastermind/static/js/main.1da4cf7e.chunk.js.map",
+    "runtime-main.js": "/Mastermind/static/js/runtime-main.cef74650.js",
+    "runtime-main.js.map": "/Mastermind/static/js/runtime-main.cef74650.js.map",
+    "static/js/2.fdb49747.chunk.js": "/Mastermind/static/js/2.fdb49747.chunk.js",
+    "static/js/2.fdb49747.chunk.js.map": "/Mastermind/static/js/2.fdb49747.chunk.js.map",
+    "static/js/3.e0fea041.chunk.js": "/Mastermind/static/js/3.e0fea041.chunk.js",
+    "static/js/3.e0fea041.chunk.js.map": "/Mastermind/static/js/3.e0fea041.chunk.js.map",
+    "index.html": "/Mastermind/index.html",
+    "static/css/main.7bae1738.chunk.css.map": "/Mastermind/static/css/main.7bae1738.chunk.css.map",
+    "static/js/2.fdb49747.chunk.js.LICENSE.txt": "/Mastermind/static/js/2.fdb49747.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cef74650.js",
+    "static/js/2.fdb49747.chunk.js",
+    "static/css/main.7bae1738.chunk.css",
+    "static/js/main.1da4cf7e.chunk.js"
+  ]
+}
