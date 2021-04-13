@@ -3,9 +3,12 @@
 @import 'styles/Nav.scss';
 @import 'styles/Help.scss';
 
-
+* {
+  box-sizing: border-box;
+}
 
 .App {
+  box-sizing: border-box;
   text-align: center;
   width: 400px;
   height:100%;

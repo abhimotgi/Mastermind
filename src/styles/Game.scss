@@ -16,10 +16,10 @@ $button-click: rgb(141, 141, 141);
 $tile-color:rgb(228, 228, 228);
 $tile-hover-color: rgb(184, 184, 184);
 
-$tile-big: 35px;
-$tile-small:$tile-big*(3/7);
-$tile-big-margin: $tile-big/10;
-$tile-small-margin: $tile-small/5;
+$tile-big: 34px;
+$tile-small:15px;
+$tile-big-margin: 3px;
+$tile-small-margin: 1px;
 
 
 
@@ -127,7 +127,6 @@ $tile-small-margin: $tile-small/5;
     height:100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
 
     &.board{
