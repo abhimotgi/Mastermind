@@ -18,20 +18,13 @@ nav {
         margin:auto;
         text-decoration:none;
         &:hover{
-            // background-color:#aaa;
-            // color:white;
+            font-weight:bolder;
         }
         &:active, :visited{
             font-weight:bolder;
-            // background-color:#000;
-            // color:white;
         }
         &.is-active {
             font-weight:bolder;
-
-            // background-color:#000;
-            // color:white;
-
         }
         
     }

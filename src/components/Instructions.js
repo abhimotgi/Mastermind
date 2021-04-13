@@ -47,8 +47,7 @@ export default function Instructions() {
                 <Tile active="active" className="tile eval" value="c6"></Tile>
                 <Tile active="active" className="tile eval" value="c6"></Tile>
             </div>
-            <p>Good luck!</p>
-
+            <br></br>
         </div>
     );
 }

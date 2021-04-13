@@ -3,15 +3,13 @@
 @import 'styles/Nav.scss';
 @import 'styles/Help.scss';
 
-* {
-  box-sizing: border-box;
-}
 
 .App {
   box-sizing: border-box;
   text-align: center;
-  width: 400px;
-  height:100%;
+  width: 80vw;
+  max-width:400px;
+  height:100vh;
   margin: auto;
 }
 

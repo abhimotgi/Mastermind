@@ -16,8 +16,8 @@ $button-click: rgb(141, 141, 141);
 $tile-color:rgb(228, 228, 228);
 $tile-hover-color: rgb(184, 184, 184);
 
-$tile-big: 34px;
-$tile-small:15px;
+$tile-big: 40px;
+$tile-small:20px;
 $tile-big-margin: 3px;
 $tile-small-margin: 1px;
 
@@ -34,7 +34,7 @@ $tile-small-margin: 1px;
     padding-bottom: 10px;
     height: 20px;
     font-size:18px;
-    width: 50%;
+    width: 80%;
     margin: 10px auto 10px auto;
     border-radius: 15px;
     padding: 2%;
@@ -72,15 +72,17 @@ $tile-small-margin: 1px;
     transition: all .1s ease-in-out; 
 
     &.board, &.guess {
-        height: $tile-big;
-        width: $tile-big;
-        margin: $tile-big-margin;
+        height: 80%;
+        min-height: $tile-big*0.8;
+        width: $tile-big*0.8;
+        margin:3px;
     }
 
     &.eval {
-        height: $tile-small;
-        width: $tile-small;
-        margin: $tile-small-margin;
+        height: 80%;
+        min-height: $tile-small*0.8;
+        width: $tile-small*0.8;
+        margin:2px;
     }
 
     &.color {
@@ -123,22 +125,24 @@ $tile-small-margin: 1px;
 }
 
 
-.main-game{
-    height:100%;
+.game-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    &.board{
-        height: 100%;
-    }
-
-    &.evals{
-        height: 100%;
-
-    }
+    margin-top:10px;
 }
 
+
+.row {
+
+    &.board{
+        height:$tile-big;
+    }
+
+    &.eval {
+        height:$tile-small;
+    }
+}
 
 .button {
     border: 0px;

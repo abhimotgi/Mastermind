@@ -64,7 +64,7 @@ class Game extends React.Component {
         for (let i = 0; i < this.state.guessRow.length; i++) {
             tiles.push(<Tile className="tile guess" value={this.state.guessRow[i]} onClick={() => this.guessTileClicked(i)}></Tile>)
         }
-        return tiles
+        return <div className="row board">{tiles}</div>
     }
 
     renderBoard = () => {
@@ -81,7 +81,7 @@ class Game extends React.Component {
                 row.push(this.renderTile(i, "inactive"))
             }
             if ((i + 1) % this.props.cols === 0) {
-                tiles.push(<div className="row">{row}</div>)
+                tiles.push(<div className="row board">{row}</div>)
                 row = []
             }
         }
@@ -94,7 +94,7 @@ class Game extends React.Component {
         for (let i = 0; i < this.state.evals.length; i++) {
             row.push(<Tile className="tile eval" value={this.state.evals[i]}></Tile>)
             if ((i + 1) * 2 % this.props.cols === 0) {
-                tiles.push(<div className="row">{row}</div>)
+                tiles.push(<div className="row eval">{row}</div>)
                 row = []
             }
         }
@@ -289,7 +289,7 @@ class Game extends React.Component {
         return (
             <div class="container">
                 <DisplayMessage className={this.state.dialog.messageState} value={this.state.dialog.message}></DisplayMessage>
-                <div className="main-game">
+                <div className="game-container board">
                     <div className="board">
                         {this.renderBoard()}
                     </div>
@@ -298,18 +298,15 @@ class Game extends React.Component {
                     </div>
                 </div>
 
-                <br />
 
-                <div>
+                <div className="game-container guess">
                     {this.renderGuessRow()}
                     <MainButton value={"x"} className="button clear-guess" onClick={this.clearGuess}></MainButton>
                 </div>
-                <br />
-                <div>
+                <div className="game-container colors">
                     {this.renderColorSelect()}
                 </div>
-                <br />
-                <div>
+                <div className="game-container buttons">
                     <MainButton onClick={this.submitMove} value="Guess" className="button guess" disabled={wonOrLost ? "disabled" : ""}></MainButton>
                     <MainButton onClick={this.resetGame} value="New Game" className="button new-game" disabled=""></MainButton>
                 </div>
