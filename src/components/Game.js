@@ -188,6 +188,8 @@ class Game extends React.Component {
             // populate the evaluations
             let newEval = this.evaluateMove()
             let newActiveRow = this.nextTurn()
+            
+            // compute game status with new board state
             let gameStatus = this.getGameStatus(newBoard, newEval, this.state.currentRow)
 
             // update the board and message
