@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Mastermind/static/css/main.75ab835d.chunk.css",
-    "main.js": "/Mastermind/static/js/main.d7bec8c8.chunk.js",
-    "main.js.map": "/Mastermind/static/js/main.d7bec8c8.chunk.js.map",
+    "main.js": "/Mastermind/static/js/main.fafe3958.chunk.js",
+    "main.js.map": "/Mastermind/static/js/main.fafe3958.chunk.js.map",
     "runtime-main.js": "/Mastermind/static/js/runtime-main.cef74650.js",
     "runtime-main.js.map": "/Mastermind/static/js/runtime-main.cef74650.js.map",
     "static/js/2.38437a0f.chunk.js": "/Mastermind/static/js/2.38437a0f.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.cef74650.js",
     "static/js/2.38437a0f.chunk.js",
     "static/css/main.75ab835d.chunk.css",
-    "static/js/main.d7bec8c8.chunk.js"
+    "static/js/main.fafe3958.chunk.js"
   ]
 }
