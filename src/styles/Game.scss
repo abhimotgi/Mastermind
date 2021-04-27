@@ -30,12 +30,12 @@ $tile-small-margin: 1px;
 
   }
 
+
 .dialog {
-    padding-bottom: 10px;
-    height: 20px;
+    // padding-bottom: 10px;
     font-size:18px;
     width: 80%;
-    margin: 10px auto 10px auto;
+    margin: 2px auto 2px auto;
     border-radius: 15px;
     padding: 2%;
 
@@ -53,6 +53,16 @@ $tile-small-margin: 1px;
 
 }
 
+@media only screen and (max-device-width: 480px) {
+    .tile.eval {
+        // height: 4px !important;
+        // width: 6px !important;
+
+        max-width: 14px !important;
+        // max-height: 12px !important;
+        // background-color:rgb(64, 243, 145) !important;
+    }
+}
 
 
 .tile {

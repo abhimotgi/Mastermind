@@ -119,6 +119,11 @@ class Game extends React.Component {
         return tiles
     }
 
+    renderSolution = () => {
+        let soln = this.state.solution.map(val => <Tile active="active" className="tile board" value={val}></Tile>)
+        return soln
+    }
+
     nextTurn = () => {
         var newActiveRow = parseInt(this.state.currentRow) + parseInt(this.props.cols)
         if (newActiveRow <= this.state.board.length) {
@@ -256,7 +261,7 @@ class Game extends React.Component {
         }
         else if (currentRow + this.props.cols === board.length) {
             return {
-                message: 'You lost...',
+                message: 'You lost... The code was:',
                 messageState: 'dialog lost'
             }
         } else {
@@ -290,7 +295,10 @@ class Game extends React.Component {
 
         return (
             <div class="container">
-                <DisplayMessage className={this.state.dialog.messageState} value={this.state.dialog.message}></DisplayMessage>
+                <div class="info">
+                    <DisplayMessage className={this.state.dialog.messageState} value={this.state.dialog.message}></DisplayMessage>
+                    {this.state.dialog.messageState === "dialog lost" ? this.renderSolution() : ""}
+                </div>
                 <div className="game-container board">
                     <div className="board">
                         {this.renderBoard()}
